@@ -29,23 +29,17 @@ public class MyAuthentication implements Authentication {
 
 	@Override
   public Map<String, Object> getAttributes() {
-    if (this.currentUser != null) {
-      Map<String, Object> m = new ConcurrentHashMap<>();
-      m.putAll(this.claimSet);
-      m.put("dummy", this.currentUser);
-      System.out.println("m: " + m);
-      return m;
-    }  
-
     return this.claimSet;
   }
   
   public void setCurrentUser(User user) {
     if (this.currentUser == null) {
       this.currentUser = user;
-      // this.claimSet.put("current-user",this.currentUser);
-     
-      // System.out.println("m: " + m);
+      Map<String, Object> m = new ConcurrentHashMap<>();
+      m.putAll(this.claimSet);
+      m.put("dummy", this.currentUser);
+      System.out.println("m: " + m);
+      this.claimSet = m;
     }
   }
 

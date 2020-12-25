@@ -14,9 +14,9 @@ import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.security.utils.SecurityService;
 
-@Controller("secured")
+@Controller("secured/{pid}")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-@CheckForPid()
+@CheckForPid(ignore = false)
 public class SecuredController {
 
   // @Inject
@@ -40,7 +40,7 @@ public class SecuredController {
     return "You have ROLE_ADMIN or ROLE_X roles";
   }
   
-  @Get("/pid-check/{pid}")
+  @Get("/pid-check")
   @Produces(MediaType.TEXT_PLAIN)
   public String checkmyPid(int pid) {
     System.out.println("Pid: " + pid);

@@ -25,9 +25,27 @@ public class CheckForPidSecurityRule implements SecurityRule {
         if (methodBasedRouteMatch.hasAnnotation(CheckForPid.class)) {
           AnnotationValue<CheckForPid> checkPidAnnotation = methodBasedRouteMatch.getAnnotation(CheckForPid.class);
           // Get parameters from annotation on method
+          Optional<Boolean> value = checkPidAnnotation.booleanValue("ignore");
 
           System.out.println("checkPidAnnotation: " + checkPidAnnotation);
 
+          if (value.isPresent()) {
+            Map<String, Object> variablevalues = methodBasedRouteMatch.getVariableValues();
+            System.out.println("RouterMachVariable values: " + variablevalues);
+
+            System.out.println("Security rule request: " + request);
+
+            Integer pid = Integer.parseInt((String)variablevalues.get("pid"));
+
+            if (pid == 3) {
+              return SecurityRuleResult.ALLOWED;
+              
+            } else {
+              return SecurityRuleResult.REJECTED;
+            }
+
+          }
+          
           // Optional<String> resourceIdName = requiredPermissionAnnotation.stringValue("resourceIdName");
           // Optional<String> permission = requiredPermissionAnnotation.stringValue("permission");
           // if (permission.isPresent() && resourceIdName.isPresent() && claims != null) {
