@@ -1,0 +1,33 @@
+micronaut:
+  application:
+    name: micronautTut
+  server:
+    port: 8080
+  http:
+    client:
+      pool:
+        enabled: true
+  # jackson:
+  #   serializationInclusion: ALWAYS
+  security:
+    token:
+      jwt:
+        # writer:
+        #   header:
+        #     enabled: true
+        # propagation:
+        #   enabled: true
+        cookie:
+          enabled: false
+        generator:
+          access-token:
+            expiration: 3600
+        signatures:
+          secret:
+            generator:
+              secret: pleaseChangeThisSecretForANewOne
+              jws-algorithm: HS256
+        # claims-validators:
+        #   openid-idtoken: false
+    authentication: bearer
+    # authentication-provider-strategy: any
