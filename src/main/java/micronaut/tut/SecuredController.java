@@ -13,7 +13,7 @@ import io.micronaut.security.rules.SecurityRule;
 
 @Controller("secured/{pid}")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-@CheckForPid(ignore = false)
+@CheckForPid()
 public class SecuredController {
 
   @Get(produces = MediaType.TEXT_PLAIN)
@@ -34,6 +34,7 @@ public class SecuredController {
   
   @Get("/pid-check")
   @Produces(MediaType.TEXT_PLAIN)
+  @CheckForPid(ignore = true)
   public String checkmyPid(int pid) {
     System.out.println("Controller Pid: " + pid);
     return "check for pid";

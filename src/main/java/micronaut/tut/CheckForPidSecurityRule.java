@@ -28,22 +28,28 @@ public class CheckForPidSecurityRule implements SecurityRule {
 
           System.out.println("checkPidAnnotation: " + checkPidAnnotation);
 
-          if (value.isPresent()) {
+          if (value.isEmpty()) {
             Map<String, Object> variablevalues = methodBasedRouteMatch.getVariableValues();
             System.out.println("RouterMachVariable values: " + variablevalues);
 
             System.out.println("Security rule request: " + request);
 
-            Integer pid = Integer.parseInt((String)variablevalues.get("pid"));
+            Integer pid = Integer.parseInt((String) variablevalues.get("pid"));
 
             if (pid == 3) {
               return SecurityRuleResult.ALLOWED;
-              
+
             } else {
               return SecurityRuleResult.REJECTED;
             }
 
           }
+
+          if (value.isPresent() && value.get()) {
+            return SecurityRuleResult.ALLOWED;
+          }
+          
+          System.out.println("Value not present");
           
           // Optional<String> resourceIdName = requiredPermissionAnnotation.stringValue("resourceIdName");
           // Optional<String> permission = requiredPermissionAnnotation.stringValue("permission");
