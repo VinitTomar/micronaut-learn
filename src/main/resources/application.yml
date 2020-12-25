@@ -12,6 +12,7 @@ micronaut:
   security:
     token:
       jwt:
+        enabled: true
         # writer:
         #   header:
         #     enabled: true
