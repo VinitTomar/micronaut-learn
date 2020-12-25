@@ -1,6 +1,6 @@
 package micronaut.tut;
 
-import io.micronaut.context.annotation.Primary;
+// import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Secondary;
 
 import javax.inject.Singleton;

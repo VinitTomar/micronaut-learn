@@ -2,11 +2,8 @@ package micronaut.tut;
 
 import java.text.ParseException;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Singleton;
-
-import java.util.Map;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -46,12 +43,6 @@ public class MyJwtAuthenticationFactory implements JwtAuthenticationFactory {
       return Optional.empty();
   }
 
-  /**
-   *
-   * @param claimSet JWT Claims
-   * @return the username defined by {@link TokenConfiguration#getNameKey()} ()} or the sub claim.
-   * @throws ParseException might be thrown parsing claims
-   */
   protected Optional<String> usernameForClaims(JWTClaimsSet claimSet) throws ParseException {
       String username = claimSet.getStringClaim(tokenConfiguration.getNameKey());
       if (username == null) {

@@ -21,10 +21,9 @@ public class CheckForPidSecurityRule implements SecurityRule {
     public SecurityRuleResult check(HttpRequest<?> request, RouteMatch<?> routeMatch, Map<String, Object> claims) {
       System.out.println("Claims in security rule: " + claims);
       if (routeMatch instanceof MethodBasedRouteMatch) {
-        MethodBasedRouteMatch methodBasedRouteMatch = (MethodBasedRouteMatch) routeMatch;
+        MethodBasedRouteMatch<?,?> methodBasedRouteMatch = (MethodBasedRouteMatch<?,?>) routeMatch;
         if (methodBasedRouteMatch.hasAnnotation(CheckForPid.class)) {
           AnnotationValue<CheckForPid> checkPidAnnotation = methodBasedRouteMatch.getAnnotation(CheckForPid.class);
-          // Get parameters from annotation on method
           Optional<Boolean> value = checkPidAnnotation.booleanValue("ignore");
 
           System.out.println("checkPidAnnotation: " + checkPidAnnotation);

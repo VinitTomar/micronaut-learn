@@ -6,14 +6,11 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.nimbusds.jwt.JWTClaimsSet;
-
 import org.reactivestreams.Publisher;
 
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationException;
-import io.micronaut.security.authentication.AuthenticationFailed;
 import io.micronaut.security.token.jwt.encryption.EncryptionConfiguration;
 import io.micronaut.security.token.jwt.signature.SignatureConfiguration;
 import io.micronaut.security.token.jwt.validator.GenericJwtClaimsValidator;
