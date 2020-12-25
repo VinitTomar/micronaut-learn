@@ -1,6 +1,7 @@
 package micronaut.tut;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,6 +13,7 @@ import org.reactivestreams.Publisher;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationException;
+import io.micronaut.security.authentication.AuthenticationFailed;
 import io.micronaut.security.token.jwt.encryption.EncryptionConfiguration;
 import io.micronaut.security.token.jwt.signature.SignatureConfiguration;
 import io.micronaut.security.token.jwt.validator.GenericJwtClaimsValidator;
@@ -43,21 +45,29 @@ public class MyJwtTokenValidator extends JwtTokenValidator {
 
     return Flowable.create(emitter -> {
 
-      MyAuthentication auth = (MyAuthentication) super.validator.validate(token)
-      .flatMap(super.jwtAuthenticationFactory::createAuthentication).get();
+      Optional<Authentication> authOptional = super.validator.validate(token)
+      .flatMap(super.jwtAuthenticationFactory::createAuthentication);
+      
+      if (authOptional.isPresent()) {
+        MyAuthentication auth = (MyAuthentication) authOptional.get();
+        this.userRepository.findUserByName(auth.getName()).subscribe(usrOptnl -> {
+          if(usrOptnl.isPresent()) {
+            var usr = usrOptnl.get();
+            System.out.println("Curretn user: " + usr);
+            auth.setCurrentUser(usr);
+            System.out.println("Auth current user: " + auth.getCurrentUser());
+            emitter.onNext(auth);
+          } else {
+            emitter.onError(new AuthenticationException("User not found with this token"));
+          }
+        });
+      } else {
 
-      this.userRepository.findUserByName(auth.getName()).subscribe(usrOptnl -> {
-        if(usrOptnl.isPresent()) {
-          var usr = usrOptnl.get();
-          System.out.println("Curretn user: " + usr);
-          auth.setCurrentUser(usr);
-          System.out.println("Auth current user: " + auth.getCurrentUser());
-          emitter.onNext(auth);
-        } else {
-          emitter.onError(new AuthenticationException("User not found with this token"));
-        }
-      });
+        System.out.println("Auth in my validator not present");
 
+        emitter.onError(new AuthenticationException("Invalid token"));
+      }
+      
       emitter.onComplete();
     }, BackpressureStrategy.ERROR);
   }

@@ -37,7 +37,7 @@ public class MyAuthentication implements Authentication {
       this.currentUser = user;
       Map<String, Object> m = new ConcurrentHashMap<>();
       m.putAll(this.claimSet);
-      m.put("dummy", this.currentUser);
+      m.put("current-user", this.currentUser);
       System.out.println("m: " + m);
       this.claimSet = m;
     }
