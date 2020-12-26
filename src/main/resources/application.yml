@@ -10,6 +10,9 @@ micronaut:
   # jackson:
   #   serializationInclusion: ALWAYS
   security:
+    endpoints:
+      introspection:
+        enabled: false
     reject-not-found: false
     token:
       jwt:
@@ -33,3 +36,20 @@ micronaut:
         #   openid-idtoken: false
     authentication: bearer
     # authentication-provider-strategy: any
+endpoints:
+  env:
+    enabled: false
+  beans:
+    enabled: false
+  info:
+    enabled: false
+  health:
+    enabled: false
+  refresh:
+    enabled: false
+  threaddump:
+    enabled: false
+  tokeninfo:
+    enabled: false
+  routes:
+    enabled: false
