@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.security.authentication.Authentication;
@@ -24,6 +26,9 @@ import io.reactivex.Flowable;
 @Replaces(JwtTokenValidator.class)
 public class MyJwtTokenValidator extends JwtTokenValidator {
 
+  private static final Logger logger = (Logger) LoggerFactory.getLogger(Application.class);
+
+
   @Inject
   UserRepository userRepository;
 
@@ -38,7 +43,7 @@ public class MyJwtTokenValidator extends JwtTokenValidator {
   @Override
   @Deprecated
   public Publisher<Authentication> validateToken(String token) {
-    System.out.println("My Jwt token validator");
+    logger.info("My Jwt token validator");
 
     return Flowable.create(emitter -> {
 
@@ -50,9 +55,9 @@ public class MyJwtTokenValidator extends JwtTokenValidator {
         this.userRepository.findUserByName(auth.getName()).subscribe(usrOptnl -> {
           if(usrOptnl.isPresent()) {
             var usr = usrOptnl.get();
-            System.out.println("Curretn user: " + usr);
+            logger.info("Curretn user: " + usr);
             auth.setCurrentUser(usr);
-            System.out.println("Auth current user: " + auth.getCurrentUser());
+            logger.info("Auth current user: " + auth.getCurrentUser());
             emitter.onNext(auth);
           } else {
             emitter.onError(new AuthenticationException("User not found with this token"));
@@ -60,7 +65,7 @@ public class MyJwtTokenValidator extends JwtTokenValidator {
         });
       } else {
 
-        System.out.println("Auth in my validator not present");
+        logger.info("Auth in my validator not present");
 
         emitter.onError(new AuthenticationException("Invalid token"));
       }

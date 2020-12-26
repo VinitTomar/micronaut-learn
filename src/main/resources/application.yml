@@ -10,6 +10,7 @@ micronaut:
   # jackson:
   #   serializationInclusion: ALWAYS
   security:
+    reject-not-found: false
     token:
       jwt:
         enabled: true

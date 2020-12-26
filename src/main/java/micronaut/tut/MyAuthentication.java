@@ -3,10 +3,15 @@ package micronaut.tut;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.micronaut.security.authentication.Authentication;
 
-
 public class MyAuthentication implements Authentication {
+
+  private static final Logger logger = (Logger) LoggerFactory.getLogger(Application.class);
+
  
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +43,7 @@ public class MyAuthentication implements Authentication {
       Map<String, Object> m = new ConcurrentHashMap<>();
       m.putAll(this.claimSet);
       m.put("current-user", this.currentUser);
-      System.out.println("m: " + m);
+      logger.info("m: " + m);
       this.claimSet = m;
     }
   }

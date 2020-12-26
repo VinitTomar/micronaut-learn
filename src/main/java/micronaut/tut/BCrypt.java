@@ -26,9 +26,9 @@ import java.util.Arrays;
  * <p>
  * <code>
  * if (BCrypt.checkpw(candidate_password, stored_hash))<br />
- * &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("It matches");<br />
+ * &nbsp;&nbsp;&nbsp;&nbsp;logger.info("It matches");<br />
  * else<br />
- * &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("It does not match");<br />
+ * &nbsp;&nbsp;&nbsp;&nbsp;logger.info("It does not match");<br />
  * </code>
  * <p>
  * The gensalt() method takes an optional parameter (log_rounds) that determines the

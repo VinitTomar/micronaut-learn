@@ -6,9 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(value={ElementType.METHOD,ElementType.TYPE})
+@Target(value = { ElementType.METHOD, ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 @Retention(value=RetentionPolicy.RUNTIME)
-@Inherited
+// @Inherited
 public @interface CheckForPid {
   boolean ignore() default false;
 }

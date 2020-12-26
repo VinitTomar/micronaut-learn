@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.http.HttpRequest;
@@ -20,6 +22,8 @@ import io.reactivex.Flowable;
 
 @Singleton
 public class AutthenticationProviderUserPassword implements AuthenticationProvider {
+
+  private static final Logger logger = (Logger) LoggerFactory.getLogger(Application.class);
   
   @Inject
   BCryptPasswordEncoderService passencoder;
@@ -35,7 +39,7 @@ public class AutthenticationProviderUserPassword implements AuthenticationProvid
 
     return Flowable.create(emitter -> {
 
-      System.out.println("Autthentication provider user password");
+      logger.info("Autthentication provider user password");
 
       var username = (String) authenticationRequest.getIdentity();
       var pass = (String) authenticationRequest.getSecret();

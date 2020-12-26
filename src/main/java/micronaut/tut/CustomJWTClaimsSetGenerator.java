@@ -4,6 +4,9 @@ import javax.inject.Singleton;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.runtime.ApplicationConfiguration;
@@ -17,6 +20,9 @@ import io.micronaut.security.token.jwt.generator.claims.JwtIdGenerator;
 @Replaces(bean = JWTClaimsSetGenerator.class)
 public class CustomJWTClaimsSetGenerator extends JWTClaimsSetGenerator {
 
+  private static final Logger logger = (Logger) LoggerFactory.getLogger(Application.class);
+
+
   public CustomJWTClaimsSetGenerator(
     TokenConfiguration tokenConfiguration,
     @Nullable JwtIdGenerator jwtIdGenerator,
@@ -29,6 +35,6 @@ public class CustomJWTClaimsSetGenerator extends JWTClaimsSetGenerator {
   @Override
   protected void populateWithUserDetails(JWTClaimsSet.Builder builder, UserDetails userDetails) {
     super.populateWithUserDetails(builder, userDetails);
-    System.out.println("Username from detail: " + userDetails.getUsername());
+    logger.info("Username from detail: " + userDetails.getUsername());
   }
 }

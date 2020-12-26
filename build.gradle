@@ -24,6 +24,8 @@ dependencies {
   compileOnly 'org.projectlombok:lombok:1.18.12'
   annotationProcessor "org.projectlombok:lombok:1.18.12"
   // implementation "org.springframework.security:spring-security-crypto:5.4.2"
+  // https://mvnrepository.com/artifact/log4j/apache-log4j-extras
+  // compile group: 'log4j', name: 'apache-log4j-extras', version: '1.2.17'
   implementation("io.micronaut.rxjava3:micronaut-rxjava3:1.1.0")
   implementation("io.micronaut:micronaut-validation")
   implementation("io.micronaut:micronaut-runtime")

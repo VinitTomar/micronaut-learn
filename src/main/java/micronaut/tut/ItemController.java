@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.core.Single;
 
 
 @Controller("/items")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class ItemController {
 
   @Inject

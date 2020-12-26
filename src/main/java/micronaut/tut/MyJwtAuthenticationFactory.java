@@ -8,6 +8,9 @@ import javax.inject.Singleton;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.token.config.TokenConfiguration;
@@ -18,6 +21,8 @@ import io.micronaut.security.token.jwt.validator.JwtAuthenticationFactory;
 @Singleton
 @Replaces(DefaultJwtAuthenticationFactory.class)
 public class MyJwtAuthenticationFactory implements JwtAuthenticationFactory {
+
+  private static final Logger logger = (Logger) LoggerFactory.getLogger(Application.class);
 
 
   private final TokenConfiguration tokenConfiguration;
@@ -34,11 +39,11 @@ public class MyJwtAuthenticationFactory implements JwtAuthenticationFactory {
               return Optional.empty();
           }
           return usernameForClaims(claimSet).map(username -> {
-            System.out.println("My jwt authentication factory (create authentication)");
+            logger.info("My jwt authentication factory (create authentication)");
             return new MyAuthentication(claimSet.getClaims(), username);
           });
       } catch (ParseException e) {
-          System.out.println("ParseException creating authentication");
+          logger.info("ParseException creating authentication");
       }
       return Optional.empty();
   }

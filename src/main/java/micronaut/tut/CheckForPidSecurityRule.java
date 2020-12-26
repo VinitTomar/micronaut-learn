@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import javax.inject.Singleton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.rules.SecurityRule;
@@ -17,24 +20,29 @@ import io.micronaut.web.router.RouteMatch;
 public class CheckForPidSecurityRule implements SecurityRule {
   public static final Integer ORDER = SecuredAnnotationRule.ORDER - 100;
 
+  private static final Logger logger = (Logger) LoggerFactory.getLogger(Application.class);
+
+
 	@Override
     public SecurityRuleResult check(HttpRequest<?> request, RouteMatch<?> routeMatch, Map<String, Object> claims) {
-      System.out.println("Claims in security rule: " + claims);
+      logger.info("Claims in security rule: " + claims);
       if (routeMatch instanceof MethodBasedRouteMatch) {
         MethodBasedRouteMatch<?,?> methodBasedRouteMatch = (MethodBasedRouteMatch<?,?>) routeMatch;
         if (methodBasedRouteMatch.hasAnnotation(CheckForPid.class)) {
           AnnotationValue<CheckForPid> checkPidAnnotation = methodBasedRouteMatch.getAnnotation(CheckForPid.class);
           Optional<Boolean> value = checkPidAnnotation.booleanValue("ignore");
 
-          System.out.println("checkPidAnnotation: " + checkPidAnnotation);
+          logger.info("checkPidAnnotation: " + checkPidAnnotation);
 
           if (value.isEmpty()) {
             Map<String, Object> variablevalues = methodBasedRouteMatch.getVariableValues();
-            System.out.println("RouterMachVariable values: " + variablevalues);
+            logger.info("RouterMachVariable values: " + variablevalues);
 
-            System.out.println("Security rule request: " + request);
+            logger.info("Security rule request: " + request);
 
             Integer pid = Integer.parseInt((String) variablevalues.get("pid"));
+
+            logger.info("Pid in security rule: " + pid);
 
             if (pid == 3) {
               return SecurityRuleResult.ALLOWED;
@@ -48,9 +56,9 @@ public class CheckForPidSecurityRule implements SecurityRule {
           if (value.isPresent() && value.get()) {
             return SecurityRuleResult.ALLOWED;
           }
-          
-          System.out.println("Value not present");
-          
+
+          logger.info("Value not present");
+
           // Optional<String> resourceIdName = requiredPermissionAnnotation.stringValue("resourceIdName");
           // Optional<String> permission = requiredPermissionAnnotation.stringValue("permission");
           // if (permission.isPresent() && resourceIdName.isPresent() && claims != null) {
@@ -64,6 +72,8 @@ public class CheckForPidSecurityRule implements SecurityRule {
           //     }
           // }
         }
+        
+        logger.info("Annotation not present");
       }
       return SecurityRuleResult.UNKNOWN;
     }

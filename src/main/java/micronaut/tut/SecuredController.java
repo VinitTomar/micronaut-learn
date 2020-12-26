@@ -2,6 +2,9 @@ package micronaut.tut;
 
 import java.security.Principal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -12,16 +15,19 @@ import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 
 @Controller("secured/{pid}")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 @CheckForPid()
 public class SecuredController {
 
+  private static final Logger logger = (Logger) LoggerFactory.getLogger(Application.class);
+
+
   @Get(produces = MediaType.TEXT_PLAIN)
   public String securedPath(@Nullable Principal principal, @Nullable Authentication authentication, int pid) {
-    System.out.println("Pricipal: " + principal.getName());
-    System.out.println("Index function Controller Pid: " + pid);
-    System.out.println("In controller Authentication: " + authentication.getAttributes());
-    System.out.println("In controller current user: " + ((MyAuthentication) authentication).getCurrentUser());
+    logger.info("Pricipal: " + principal.getName());
+    logger.info("Index function Controller Pid: " + pid);
+    logger.info("In controller Authentication: " + authentication.getAttributes());
+    logger.info("In controller current user: " + ((MyAuthentication) authentication).getCurrentUser());
     return "This is secured";
   }
 
@@ -36,7 +42,7 @@ public class SecuredController {
   @Produces(MediaType.TEXT_PLAIN)
   @CheckForPid(ignore = true)
   public String checkmyPid(int pid) {
-    System.out.println("Controller Pid: " + pid);
+    logger.info("Controller Pid: " + pid);
     return "check for pid";
   }
   
