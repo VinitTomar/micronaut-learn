@@ -17,5 +17,6 @@ public class User {
   String username;
 
   @JsonIgnore
+  @ToString.Exclude
   String password;
 }

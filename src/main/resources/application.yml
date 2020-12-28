@@ -53,3 +53,7 @@ endpoints:
     enabled: false
   routes:
     enabled: false
+
+my:
+  engine:
+    cylinders: 6
